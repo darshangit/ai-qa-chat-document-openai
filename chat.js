@@ -7,9 +7,9 @@ const rl = readline.createInterface({
 })
 
 
-const newMessage = async (history,message) => {
+const newMessage = async (history, message) => {
     const result = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         messages: [...history, message],
 
     })
@@ -17,17 +17,17 @@ const newMessage = async (history,message) => {
     return result.choices[0].message
 }
 
-const formatMessage = (userInput) => ({role: 'user', content: userInput})
+const formatMessage = (userInput) => ({ role: 'user', content: userInput })
 
 const chat = () => {
 
     const history = [
-        {role: 'system', content: 'You are an AI assistant. Answer questions or else!!!'}
+        { role: 'system', content: 'You are an AI assistant. Answer questions or else!!!' }
     ]
 
     const start = () => {
-        rl.question('You: ', async(userInput) => {
-            if(userInput.toLocaleLowerCase() === 'exit') {
+        rl.question('You: ', async (userInput) => {
+            if (userInput.toLocaleLowerCase() === 'exit') {
                 rl.close()
                 return
             }
@@ -45,6 +45,6 @@ const chat = () => {
 
 }
 
-console.log('chatbot initialized. Type exit to end code' )
+console.log('chatbot initialized. Type exit to end code')
 chat()
 

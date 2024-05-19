@@ -12,19 +12,19 @@ const video = 'https://youtu.be/zR_iuq2evXo?si=cG8rODgRgXOx9_Cn'
 const createStore = (docs) => MemoryVectorStore.fromDocuments(docs, new OpenAIEmbeddings())
 
 
-const docsFromYTVideo = (video) => {
-    const loader = YoutubeLoader.createFromUrl(video, {
-        language: 'en',
-        addVideoInfo: true,
-    })
-    return loader.loadAndSplit(
-        new CharacterTextSplitter({
-            separator: ' ',
-            chunkSize: 2500,
-            chunkOverlap: 100
-        })
-    )
-}
+// const docsFromYTVideo = (video) => {
+//     const loader = YoutubeLoader.createFromUrl(video, {
+//         language: 'en',
+//         addVideoInfo: true,
+//     })
+//     return loader.loadAndSplit(
+//         new CharacterTextSplitter({
+//             separator: ' ',
+//             chunkSize: 2500,
+//             chunkOverlap: 100
+//         })
+//     )
+// }
 
 const docsFromPDF = () => {
     const loader = new PDFLoader('xbox.pdf')
@@ -37,9 +37,9 @@ const docsFromPDF = () => {
 
 
 const loadStore = async () => {
-    const videoDocs = await docsFromYTVideo(video)
+    // const videoDocs = await docsFromYTVideo(video)
     const pdfDocs = await docsFromPDF()
-    const docs = [...videoDocs, ...pdfDocs]
+    const docs = [ ...pdfDocs]
     return createStore(docs)
 }
 
@@ -48,7 +48,7 @@ const query = async () => {
     const results = await store.similaritySearch(question, 2)
 
     const response = await openai.chat.completions.create({
-        model: 'gpt-4-turbo-preview',
+        model: 'TheBloke/Mistral-7B-Instruct-v0.2-GGUF',
         temperature: 0,
         messages: [
             { role: 'system', content: 'You are a helpful AI assistant. Answer your questions to the best of teh ability' },
